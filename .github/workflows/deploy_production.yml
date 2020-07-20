@@ -1,0 +1,56 @@
+name: Deploy Production
+
+on:
+  release:
+      types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout branch
+      uses: actions/checkout@v1
+    - name: Setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '13.10'
+    - name: Install dependencies
+      run: yarn
+      env:
+        CI: true
+    - name: Run tests
+      run: yarn test
+      env:
+        CI: true
+    - name: Get release version
+      id: get_version
+      run: echo ::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF#refs/*/v})
+    - name: Publish to Github Packages Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: calitb/portal/portal
+        registry: docker.pkg.github.com
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        dockerfile: Dockerfile_prod
+        tags: "latest,${{ env.RELEASE_VERSION }}"
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy package to digitalocean
+      uses: appleboy/ssh-action@master
+      env:
+          GITHUB_USERNAME: ${{ secrets.USERNAME }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        host: ${{ secrets.DROPLET_HOST_PRODUCTION }}
+        username: ${{ secrets.DROPLET_USERNAME }}
+        password: ${{ secrets.DROPLET_PASSWORD }}
+        port: ${{ secrets.DROPLET_PORT }}
+        envs: GITHUB_USERNAME, GITHUB_TOKEN
+        script: |
+          docker stop $(docker ps -a -q)
+          docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN
+          docker pull docker.pkg.github.com/calitb/portal/portal:latest
+          docker run -d -p 80:80 docker.pkg.github.com/calitb/portal/portal:latest
