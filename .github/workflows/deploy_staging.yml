@@ -26,7 +26,7 @@ jobs:
     - name: Publish to Github Packages Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        name: calitb/portal/portal
+        name: calitb/digitaloceanworkflow/portal
         registry: docker.pkg.github.com
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -51,5 +51,5 @@ jobs:
         script: |
           docker stop $(docker ps -a -q)
           docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN
-          docker pull docker.pkg.github.com/calitb/portal/portal:staging
+          docker pull docker.pkg.github.com/calitb/digitaloceanworkflow/portal:staging
           docker run -d -p 80:80 docker.pkg.github.com/calitb/portal/portal:staging
