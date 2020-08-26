@@ -28,7 +28,7 @@ jobs:
     - name: Publish to Github Packages Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        name: calitb/portal/portal
+        name: calitb/digitaloceanworkflow/portal
         registry: docker.pkg.github.com
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.GITHUB_TOKEN }}
