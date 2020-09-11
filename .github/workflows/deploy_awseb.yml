@@ -52,6 +52,6 @@ jobs:
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         application_name: MyApp
         environment_name: production
-        version_label: "${{ env.RELEASE_VERSION }}"
+        version_label: "v${{ env.RELEASE_VERSION }}"
         region: us-east-1
         deployment_package: deploy.zip
