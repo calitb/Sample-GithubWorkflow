@@ -5,7 +5,7 @@
     "Key": "config.json"
   },
   "Image": {
-    "Name": "docker.pkg.github.com/calitb/digitaloceanworkflow/portal:2.1"
+    "Name": "docker.pkg.github.com/calitb/digitaloceanworkflow/portal:2.3"
   },
   "Ports": [
     {
