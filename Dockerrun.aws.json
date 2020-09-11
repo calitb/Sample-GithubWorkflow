@@ -1,11 +1,11 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Authentication": {
-    "Bucket": "docker.calitb",
+    "Bucket": "calitb.docker",
     "Key": "config.json"
   },
   "Image": {
-    "Name": "docker.pkg.github.com/calitb/digitaloceanworkflow/portal:2.3"
+    "Name": "docker.pkg.github.com/calitb/digitaloceanworkflow/portal:2.4"
   },
   "Ports": [
     {
