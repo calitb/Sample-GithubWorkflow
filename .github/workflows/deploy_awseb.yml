@@ -26,7 +26,7 @@ jobs:
       id: get_version
       run: echo ::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF#refs/*/v})
     - name: Publish to Github Packages Registry
-      uses: elgohr/Publish-Docker-Github-Action@master
+      uses: elgohr/Publish-Docker-Github-Action@v5
       with:
         name: calitb/digitaloceanworkflow/portal
         registry: docker.pkg.github.com
